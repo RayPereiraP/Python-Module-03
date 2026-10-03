@@ -1,108 +1,53 @@
 import sys
 
-def ft_inventory_system_analysis(inventory_dct: dict) -> None:
-	print("inventory system analysis")
-	total_items = 0
-	unique_typer = 0
-	for k, v in inventory_dct.items():
-		unique_types += 1
-		total_items += v
-	print(f"total items {total_items}")
-	print(f"unique item types {unique_types}")
-
-def ft_current_inventory(inventory_dct: dict) -> None:
-	print("\n current inventory")
-	total_units = 0
-	for v in inventory_dct.values():
-		total_units += v
-	for k, v in inventory_dct.items():
-		if total_units > 0:
-			percentage = (v / total_units) * 100
-		else:
-			percentage = 0.0
-		print(f"{k}: {v} units ({percentage:.1f}%)")
-
-def ft_inventory_statistics(inventory_dct: dict) -> None:
-	 print("\nInventory Statistics")
-	for k in inventory_dct:
-		most_k = k
-		least_k = k
-		most_v = inventory_dct[k]
-		least_v = inventory_dct[k]
-		break
-	for k in inventory_dct:
-		if inventory_dct[k] > most_v:
-			most_k = k
-			most_v = inventory_dct[k]
-		if inventory_dct[k] < least_v:
-			least_k = k
-			least_v = inventory_dct[k]
-	print(f"Most abundant: {most_k} ({most_v} units)")
-	print(f"Least abundant: {least_k} ({least_v} units)")
-
-def ft_item_categories(inventory_dct: dict) -> None:
-	print("\nItem Categories")
-	filtered_ab = {}
-	filtered_mod = {}
-	filtered_sc = {}
-	for k, v in inventory_dct.items():
-		if v > 10:
-			filtered_ab.update({k: v})
-		elif v > 4:
-			filtered_mod.update({k: v})
-		else:
-			filtered_sc.update({k: v})
-	if filtered_ab:
-		print(f"Abundant: {filtered_ab}")
-	if filtered_mod:
-		print(f"Moderate: {filtered_mod}")
-	if filtered_sc:
-		print(f"Scarce: {filtered_sc}")
-
-def ft_management_suggestions(inventory_dct: dict) -> None:
-	"""Check what items are low on stock"""
-	print("\nManagement Suggestions")
-	restock_items = []
-	for k, v in inventory_dct.items():
-		if v < 2:
-			restock_items.append(k)
-	print(f"Restock needed: {restock_items}")
-
-
-def ft_dictionary_properties_demo(inventory_dct: dict) -> None:
-	"""Show keys, values and a lookup item example"""
-	print("\nDictionary Properties Demo")
-	dict_keys = []
-	dict_values = []
-	for k, v in inventory_dct.items():
-		dict_keys.append(k)
-		dict_values.append(v)
-	print(f"Dictionary keys: {dict_keys}")
-	print(f"Dictionary values: {dict_values}")
-	if 'sword' in inventory_dct:
-		print("Sample lookup - 'sword' in inventory: True")
-	else:
-		print("Sample lookup - 'sword' in inventory: False")
-
 
 def ft_inventory_system() -> None:
-	inventory = {}
-	i = 1
-	while i < len(sys.argv):
-		item = sys.argv[i].split(":")
-		name = item[0]
-		quantity = int(item[1])
-		inventory.update({name: quantity})
-		i += 1
-	if not inventory:
-		print("No items to analyze.")
-		return
-	ft_inventory_system_analysis(inventory)
-	ft_current_inventory(inventory)
-	ft_inventory_statistics(inventory)
-	ft_item_categories(inventory)
-	ft_management_suggestions(inventory)
-	ft_dictionary_properties_demo(inventory)
+    print("=== Inventory System Analysis ===")
+
+    inv: dict[str, int] = {}
+
+    for i in range(1, len(sys.argv)):
+        arg: str = sys.argv[i]
+        parts: list[str] = arg.split(':')
+
+        if len(parts) != 2:
+            print(f"Error - invalid parameter '{arg}'")
+            continue
+
+        name: str = parts[0]
+        if name in inv:
+            print(f"Redundant item '{name}' - discarding")
+            continue
+
+        try:
+            qty: int = int(parts[1])
+            inv.update({name: qty})
+        except ValueError as e:
+            print(f"Quantity error for '{name}': {e}")
+
+    if not inv:
+        return
+
+    print(f"Got inventory: {inv}")
+    item_list: list[str] = list(inv.keys())
+    print(f"Item list: {item_list}")
+
+    total: int = sum(inv.values())
+    print(f"Total quantity of the {len(item_list)} items: {total}")
+
+    for key, val in inv.items():
+        pct: float = (val / total) * 100 if total > 0 else 0.0
+        print(f"Item {key} represents {round(pct, 1)}%")
+
+    most_abundant_item: str = max(inv, key=inv.get)  # type: ignore
+    least_abundant_item: str = min(inv, key=inv.get) # type: ignore
+
+    print(f"Item most abundant: {most_abundant_item} with quantity {inv[most_abundant_item]}")
+    print(f"Item least abundant: {least_abundant_item} with quantity {inv[least_abundant_item]}")
+
+    inv.update({'magic_item': 1})
+    print(f"Updated inventory: {inv}")
+
 
 if __name__ == "__main__":
-	ft_inventory_system()
+    ft_inventory_system()

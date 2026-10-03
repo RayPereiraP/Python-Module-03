@@ -1,28 +1,30 @@
 import sys
 
+
 def ft_score_analytics() -> None:
-	print("player score analytics")
+    print("=== Player Score Analytics ===")
 
-	if len(sys.argv) == 1:
-		print("No scores provided. Usage: python3 ft_score_analytics.py"
-			" <score1> <score2> ...")
-		return
+    scores: list[int] = []
 
-	try: 
-		numbers = []
-		i = 1
-		for i in range(1, len(sys.argv)):
-			numbers.append(int(sys.argv[i]))
-	except ValueError:
-		print("error: all scores must be numeric values")
-		return
-	print(f"scores processed: {numbers}")
-	print(f"total players: {len(numbers)}")
-	print(f"Total score: {sum(numbers)}")
-	print(f"Average score: {sum(numbers) / len(numbers)}")
-	print(f"High score: {max(numbers)}")
-	print(f"Low score: {min(numbers)}")
-	print(f"Score range: {max(numbers) - min(numbers)}\n")
+    for i in range(1, len(sys.argv)):
+        try:
+            scores.append(int(sys.argv[i]))
+        except ValueError:
+            print(f"Invalid parameter: '{sys.argv[i]}'")
+
+    if not scores:
+        print("No scores provided. Usage: python3 ft_score_analytics.py"
+              " <score1> <score2> ...")
+        return
+
+    print(f"Scores processed: {scores}")
+    print(f"Total players: {len(scores)}")
+    print(f"Total score: {sum(scores)}")
+    print(f"Average score: {sum(scores) / len(scores):.1f}")
+    print(f"High score: {max(scores)}")
+    print(f"Low score: {min(scores)}")
+    print(f"Score range: {max(scores) - min(scores)}")
+
 
 if __name__ == "__main__":
-	ft_score_analytics()
+    ft_score_analytics()

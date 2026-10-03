@@ -1,39 +1,53 @@
-def unique_achievements(player1: set, player2: set, player3: set, player4: set) -> None:
-	unique_ach = player1.union(player2, player3, player4)
-	print(f"all unique achievements: {unique_ach}")
-	total = 0
-	for _ in unique_ach:
-		total += 1
-	print(f"total unique achievements: {total}\n")
+import random
 
-def rare_achievements(player1: set, player2: set, player3: set, player4: set) -> None:
-	rare_player1 = player1.difference(player2.union(player3))
-	rare_player1 = player1.difference(player2.union(player3))
-	rare_player1 = player1.difference(player2.union(player3))
-	rare_player1 = player1.difference(player2.union(player3))
-	rare_ach = rare_player1.union(rare_player2, rare_player3, rare_player4)
-	print(f"rare achievements (1 player): {rare_ach}\n")
+
+def gen_player_achievements(all_achievs: list[str]) -> set[str]:
+    # Pega um tamanho aleatório entre 2 e o máximo de conquistas
+    amount: int = random.randint(2, len(all_achievs))
+    # Pega 'amount' conquistas aleatórias sem repetir
+    chosen: list[str] = random.sample(all_achievs, amount)
+    return set(chosen)
+
 
 def ft_achievement_tracker() -> None:
-	lia = {'first_kill', 'level_15', 'treasure_hunter', 'speed_demon'}
-	mary = {'first_kill', 'level_9', 'boss_slayer', 'collector'}
-	ane = {'first_kill', 'level_9', 'boss_slayer', 'collector'}
-	mini = {'level_10', 'treasure_hunter', 'boss_slayer',
-			   'speed_demon', 'perfectionist'}
+    all_achievs: list[str] = [
+        'Crafting Genius', 'World Savior', 'Master Explorer', 'Collector Supreme',
+        'Untouchable', 'Boss Slayer', 'Strategist', 'Speed Runner', 'Survivor',
+        'Treasure Hunter', 'Unstoppable', 'First Steps', 'Sharp Mind'
+    ]
 
-	print("Achievement Tracker System\n")
-	print(f"Player lia achievements: {lia}")
-	print(f"Player mary achievements: {mary}")
-	print(f"Player ane achievements: {ane}")
-	print(f"Player mini achievements: {mini}\n")
+    print("=== Achievement Tracker System ===")
 
-	print("Achievement Analytics")
-	unique_achievements(lia, mary, ane, mini)
-	print(f"Common to all players: {lia.intersection(mary, ane, mini)}")
-	rare_achievements(lia, mary, ane, mini)
-	print(f"lia vs Bob ane: {lia.intersection(ane)}")
-	print(f"lia unique: {lia.difference(ane)}")
-	print(f"ane unique: {ane.difference(lia)}")
-	
+    p1: set[str] = gen_player_achievements(all_achievs)
+    p2: set[str] = gen_player_achievements(all_achievs)
+    p3: set[str] = gen_player_achievements(all_achievs)
+    p4: set[str] = gen_player_achievements(all_achievs)
+
+    print(f"Player Alice: {p1}")
+    print(f"Player Bob: {p2}")
+    print(f"Player Charlie: {p3}")
+    print(f"Player Dylan: {p4}\n")
+
+    # Todos os sets juntos
+    all_distinct: set[str] = p1.union(p2).union(p3).union(p4)
+    print(f"All distinct achievements: {all_distinct}")
+
+    # O que todos os 4 têm em comum
+    common: set[str] = p1.intersection(p2).intersection(p3).intersection(p4)
+    print(f"Common achievements: {common}\n")
+
+    # Conquistas que SÓ aquela pessoa tem
+    print(f"Only Alice has: {p1.difference(p2.union(p3).union(p4))}")
+    print(f"Only Bob has: {p2.difference(p1.union(p3).union(p4))}")
+    print(f"Only Charlie has: {p3.difference(p1.union(p2).union(p4))}")
+    print(f"Only Dylan has: {p4.difference(p1.union(p2).union(p3))}\n")
+
+    # O que falta para a pessoa ter TUDO
+    print(f"Alice is missing: {set(all_achievs).difference(p1)}")
+    print(f"Bob is missing: {set(all_achievs).difference(p2)}")
+    print(f"Charlie is missing: {set(all_achievs).difference(p3)}")
+    print(f"Dylan is missing: {set(all_achievs).difference(p4)}")
+
+
 if __name__ == "__main__":
-	ft_achievement_tracker()
+    ft_achievement_tracker()

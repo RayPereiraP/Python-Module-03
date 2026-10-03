@@ -1,123 +1,31 @@
-def list_comprehension(game_data: list):
-	try:
-		print("\n=== List Comprehension Examples ===")
-		high_scorers = [player["name"] for player in game_data
-						if player["score"] > 2000]
-		scores_doubled = [player["score"] * 2 for player in game_data]
-		active_players = [player["name"] for player in game_data
-						  if player["active"]]
-
-		print(f"High scorers (>2000): {high_scorers}")
-		print(f"Scores doubled: {scores_doubled}")
-		print(f"Active players: {active_players}")
-
-	except Exception:
-		print("Error while generating the List Comprehension Examples")
+import random
 
 
-def dict_comprehension_examples(game_data: list):
-	print("\n=== Dict Comprehension Examples ===")
-	try:
-		player_scores = {player["name"]: player["score"]
-						 for player in game_data}
-		print(f"Player scores: {player_scores}")
+def ft_data_alchemist() -> None:
+    print("=== Game Data Alchemist ===")
 
-		score_categ_lst = [("high" if player["score"] > 2200
-							else "medium" if player["score"] > 2000
-							else "low") for player in game_data]
-		score_categ_dict = {categ: score_categ_lst.count(categ)
-							for categ in score_categ_lst}
-		print(f"Score categories: {score_categ_dict}")
+    initial: list[str] = ['Alice', 'bob', 'Charlie', 'dylan', 'Emma', 'Gregory', 'john', 'kevin', 'Liam']
+    print(f"Initial list of players: {initial}\n")
 
-		achiev_counts = {player["name"]: len(player["achievements"])
-						 for player in game_data}
-		print(f"Achievement counts: {achiev_counts}")
+    # Lista 1: Todos com letra maiúscula (mapeamento)
+    cap_all: list[str] = [name.capitalize() for name in initial]
+    print(f"New list with all names capitalized: {cap_all}\n")
 
-	except Exception:
-		print("Error while generating the Dict Comprehension Examples")
+    # Lista 2: Filtrando apenas os que já vieram com letra maiúscula (filtro)
+    cap_only: list[str] = [name for name in initial if name[0].isupper()]
+    print(f"New list of capitalized names only: {cap_only}\n")
 
+    # Dict 1: Criação de chaves a partir de nomes e valores randômicos para os scores
+    scores: dict[str, int] = {name: random.randint(0, 1000) for name in cap_all}
+    print(f"Score dict: {scores}\n")
 
-def set_comprehension_examples(game_data: list):
-	print("\n=== Set Comprehension Examples ===")
-	try:
-		unique_players = {player["name"] for player in game_data}
-		unique_achiev = {ach for player in game_data
-						 for ach in player["achievements"]}
-		active_reg = {player["region"] for player in game_data}
-		print(f"Unique players: {unique_players}")
-		print(f"Unique achievements: {unique_achiev}")
-		print(f"Active regions: {active_reg}")
-	except Exception:
-		print("Error while generating the Set Comprehension Examples")
+    avg: float = sum(scores.values()) / len(scores)
+    print(f"Score average is {round(avg, 2)}")
 
+    # Dict 2: Filtrando um dicionário a partir de outro usando as chaves e valores (k, v)
+    high: dict[str, int] = {k: v for k, v in scores.items() if v > avg}
+    print(f"High scores: {high}")
 
-def combined_analysis(game_data: list):
-	print("\n=== Combined Analysis ===")
-	try:
-		total_players = len(game_data)
-		total_uniq_ach = len({ach for player in game_data
-							  for ach in player["achievements"]})
-		average_score = sum(player["score"]
-							for player in game_data) / len(game_data)
-		print(f"Total players: {total_players}")
-		print(f"Total unique achievements: {total_uniq_ach}")
-		print(f"Average score: {average_score:.1f}")
-
-		top_player_name = ""
-		top_player_score = 0
-		top_player_achievements = 0
-		for player in game_data:
-			if player["score"] > top_player_score:
-				top_player_score = player["score"]
-				top_player_name = player["name"]
-				top_player_achievements = len(player["achievements"])
-		print(f"Top performer: {top_player_name} "
-			  f"({top_player_score} points, "
-			  f"{top_player_achievements} achievements)")
-	except Exception:
-		print("Error while generating the Combined Analysis")
-
-
-def ft_analytics_dashboard():
-	game_data = [
-		{
-			"name": "arthur",
-			"score": 2300,
-			"region": "west",
-			"achievements": ["first_blood", "veteran_10",
-							 "dragon_slayer", "relic_hunter",
-							 "speed_runner"],
-			"active": True
-		},
-		{
-			"name": "clara",
-			"score": 1800,
-			"region": "south",
-			"achievements": ["first_blood", "veteran_10", "hoarder"],
-			"active": True
-		},
-		{
-			"name": "damon",
-			"score": 2150,
-			"region": "west",
-			"achievements": ["first_blood", "veteran_10", "dragon_slayer",
-							 "completionist", "relic_hunter",
-							 "speed_runner", "guild_master"],
-			"active": True
-		},
-		{
-			"name": "elena",
-			"score": 2050,
-			"region": "coast",
-			"achievements": ["first_blood", "veteran_10"],
-			"active": False
-		}
-	]
-	print("=== Game Analytics Dashboard ===")
-	list_comprehension(game_data)
-	dict_comprehension_examples(game_data)
-	set_comprehension_examples(game_data)
-	combined_analysis(game_data)
 
 if __name__ == "__main__":
-	ft_analytics_dashboard()
+    ft_data_alchemist()
